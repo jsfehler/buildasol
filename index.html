@@ -1,0 +1,362 @@
+<script>
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+    
+    function hexToRgb(hex) {
+      // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+      });
+
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      } : null;
+    }
+    
+    // original: alternate
+    var altSolHairPalette01 = {
+        '#583b27': '#57443b', // Mid
+        '#341b0f': '#312d2e', // Dark
+        '#907256': '#71604b', // Light
+        '#0b0401': '#0b0401' // Outline
+    }
+    
+    var altSolBodyPalette01  = {
+        '#ea1d1d': '#a45044', // Mid Red
+        '#61031c': '#674b59', // Dark Red
+        '#383838': '#2e2c2f', // Mid Grey
+        '#161616': '#2e2c2f', // Dark Grey
+        '#5c5c5c': '#686460', // Light Grey
+        
+        '#f7c697': '#f7c697', // Light Skin
+        '#e8a15e': '#e3b281', // Mid Skin
+        '#ba6a3f': '#916159', // Dark Skin
+        '#7a4026': '#692f2d', // Dark Skin 2
+        '#1c0500': '#3e1e1e' // Dark Skin 3
+    }
+    
+    function scrapeColours(elementId, outputContainer) {
+        // Scrape colours from an image
+        var img = document.getElementById(elementId);
+
+        // Create temp canvas to parse through image
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+
+        var colourData = [];
+
+        var context = canvas.getContext('2d');
+        for (var y = 0; y <= canvas.height; y++) {
+            for (var x = 0; x <= canvas.width; x++) {
+                var pixelData = context.getImageData(x, y, 1, 1).data;
+
+                var pixelRGBA = [pixelData[0], pixelData[1], pixelData[2], pixelData[3]];
+
+                var skip = false;
+                // Ignore duplicate colours
+                for (var j = 0; j < colourData.length; j++) {
+
+                    if ((colourData[j][0] === pixelRGBA[0]) && (colourData[j][1] === pixelRGBA[1]) && (colourData[j][2] === pixelRGBA[2])) {
+                        skip = true;
+                        break;
+                    }
+                }
+
+                if (skip === false) {
+                    colourData.push(pixelRGBA);
+                }
+            }
+        }
+
+        // Delete temp canvas
+        canvas.remove();
+
+        // Create colour boxes
+        var h = document.getElementById(outputContainer);
+        var canvii = [];
+        for (var i = 0; i < colourData.length; i++) {
+            input = document.createElement('input');
+            input.width = 32;
+            input.height = 32;
+            input.type = 'color'
+            input.value = rgbToHex(colourData[i][0], colourData[i][1], colourData[i][2], colourData[i][3])
+            input.id = `hairColour${i}`
+            input.originalColour = [colourData[i][0], colourData[i][1], colourData[i][2], colourData[i][3]];
+
+            h.appendChild(input);
+
+            // recolour sprite after picking
+            input.addEventListener('change', function() {
+                redrawPortrait('hair', 'redrawHair');
+                redrawPortrait('body', 'redrawBody');
+                redrawPortrait('accessory', 'redrawAccessory');
+                redrawPortrait('eyes', 'redrawEyes');
+                redrawPortrait('mouth', 'redrawMouth');
+            })
+
+            canvii.push(input);
+
+            // Skip transparency
+            if ((colourData[i][0] === 0) && (colourData[i][1] === 0) && (colourData[i][2] === 0) && (colourData[i][3] === 0)) {
+                input.setAttribute('style', 'display:None;')
+            }
+
+        }
+        // Erase previous results
+        if (img.canvii !== undefined) {
+            for (var i = 0; i < img.canvii.length; i++) {
+                img.canvii[i].remove();
+            }
+        }
+        img.canvii = canvii;
+    }
+
+    function redrawPortrait(elementId, outputContainer) {
+        var c = document.getElementById(outputContainer);
+        redrawContext = c.getContext('2d')
+
+        var img = document.getElementById(elementId);
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+
+        for (var y = 0; y <= 80; y++) {
+            for (var x = 0; x <= 64; x++) {
+                data = canvas.getContext('2d').getImageData(x, y, 1, 1);
+                rgba = data.data;
+
+                // For every pixel, check if colour has been replaced
+
+                ff = false;
+                for (var z = 0; z < img.canvii.length; z++) {
+                    if (rgba[0] === img.canvii[z].originalColour[0] && rgba[1] === img.canvii[z].originalColour[1] && rgba[2] === img.canvii[z].originalColour[2]) {
+                        ff = hexToRgb(img.canvii[z].value)
+                        ff.a = rgba[3];
+                        var zz = img.canvii[z].value
+                    }
+                }
+
+                if (ff) {
+                    var d = redrawContext.createImageData(1, 1);
+
+                    d.data[0] = ff.r;
+                    d.data[1] = ff.g;
+                    d.data[2] = ff.b;
+                    d.data[3] = ff.a;
+
+                    redrawContext.putImageData(d, x, y);
+                    ff = false;
+                }
+            }
+        }
+    }
+
+    var hairStyles = [
+        'assets/hair_sol_01.png',
+        'assets/hair_ky_01.png'
+    ]
+
+    hairIdx = 0;
+
+    function swapHair(direction) {
+        hairIdx += direction;
+
+        // Wrap scrolling through items
+        if (hairIdx < 0) {
+            hairIdx = hairStyles.length - 1;
+        }
+
+        if (hairIdx > hairStyles.length - 1) {
+            hairIdx = 0;
+        }
+
+        var elem = document.getElementById('hair');
+        elem.src = hairStyles[hairIdx];
+
+        elem.onload = function () {
+            scrapeColours('hair', 'hairColours');
+            redrawPortrait('hair', 'redrawHair');
+        }
+    }
+
+    var eyesStyles = [
+        'assets/eyes_sol_01.png',
+        'assets/eyes_sol_02.png',
+    ]
+
+    eyesIdx = 0;
+
+    function swapEyes(direction) {
+        eyesIdx += direction;
+
+        // Wrap scrolling through items
+        if (eyesIdx < 0) {
+            eyesIdx = eyesStyles.length - 1;
+        }
+
+        if (eyesIdx > eyesStyles.length - 1) {
+            eyesIdx = 0;
+        }
+
+        var elem = document.getElementById('eyes');
+        elem.src = eyesStyles[eyesIdx];
+
+        elem.onload = function () {
+            scrapeColours('eyes', 'eyesColours');
+            redrawPortrait('eyes', 'redrawEyes');
+        }
+    }
+
+    var mouthStyles = [
+        'assets/mouth_sol_01.png',
+        'assets/mouth_sol_02.png',
+    ]
+
+    mouthIdx = 0;
+
+    function swapMouth(direction) {
+        mouthIdx += direction;
+
+        // Wrap scrolling through items
+        if (mouthIdx < 0) {
+            mouthIdx = mouthStyles.length - 1;
+        }
+
+        if (mouthIdx > mouthStyles.length - 1) {
+            mouthIdx = 0;
+        }
+
+        var elem = document.getElementById('mouth');
+        elem.src = mouthStyles[mouthIdx];
+
+        elem.onload = function () {
+            scrapeColours('mouth', 'mouthColours');
+            redrawPortrait('mouth', 'redrawMouth');
+        }
+    }
+
+    window.onload = function () {
+        scrapeColours('hair', 'hairColours');
+        scrapeColours('body', 'bodyColours');
+        scrapeColours('accessory', 'accessoryColours');
+        scrapeColours('eyes', 'eyesColours');
+        scrapeColours('mouth', 'mouthColours');
+        
+        redrawPortrait('hair', 'redrawHair');
+        redrawPortrait('body', 'redrawBody');
+        redrawPortrait('accessory', 'redrawAccessory');
+        redrawPortrait('eyes', 'redrawEyes');
+        redrawPortrait('mouth', 'redrawMouth');
+    }
+
+    function zoomIn() {
+        document.getElementById('redrawContainer').setAttribute('style', 'zoom: 200%; image-rendering: pixelated;');
+    }
+
+    function zoomOut() {
+        document.getElementById('redrawContainer').setAttribute('style', 'zoom: 100%; image-rendering: pixelated;');
+    }
+
+</script>
+
+<style>
+
+div {
+  display:inline-block;
+}
+
+.redraw {
+    position: absolute;
+}
+
+</style>
+
+<img src='assets/hair_sol_01.png' id='hair' style='display:none;'>
+<img src='assets/body_sol_01.png' id='body' style='display:none;'>
+<img src='assets/accessory_sol_01.png' id='accessory' style='display:none;'>
+<img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
+<img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
+
+<div id='hairContainer'>
+    <div>Hair Colours:</div>
+    <button style='display:none;'>Reset</button>
+    <br>
+    <div id='hairColours' style='width:192px;'>
+    </div>
+
+    <div>Hair Style:</div>
+    <button id='hairPrev' onclick='swapHair(-1);'><<</button>
+    <button id ='hairNext' onclick='swapHair(1);'>>></button>
+</div>
+
+<div id='eyesContainer'>
+    <div>Eyes Colours:</div>
+    <button style='display:none;'>Reset</button>
+    <br>
+    <div id='eyesColours' style='width:192px;'>
+    </div>
+
+    <div>Eyes Style:</div>
+    <button id='eyesPrev' onclick='swapEyes(-1);'><<</button>
+    <button id ='eyesNext' onclick='swapEyes(-1);'>>></button>
+</div>
+
+<div id='mouthContainer'>
+    <div>Mouth Colours:</div>
+    <button style='display:none;'>Reset</button>
+    <br>
+    <div id='mouthColours' style='width:192px;'>
+    </div>
+
+    <div>Mouth Style:</div>
+    <button id='mouthPrev' onclick='swapMouth(-1);'><<</button>
+    <button id ='mouthNext' onclick='swapMouth(-1);'>>></button>
+</div>
+
+<div id='bodyContainer'>
+    <div>Body Colours:</div>
+    <button style='display:none;'>Reset</button>
+    <br>
+    <div id='bodyColours' style='width:192px;'>
+    </div>
+
+    <div>Body Style:</div>
+    <button id='bodyPrev'><<</button>
+    <button id ='bodyNext'>>></button>
+</div>
+
+<div id='accessoryContainer'>
+    <div>Accessory Colours:</div>
+    <button style='display:none;'>Reset</button>
+    <br>
+    <div id='accessoryColours' style='width:192px;'>
+    </div>
+
+    <div>Accessory Style:</div>
+    <button id='accPrev'><<</button>
+    <button id ='accNext'>>></button>
+</div>
+
+<div id="redrawContainer">
+<canvas class="redraw" id='redrawBody'></canvas>
+<canvas class="redraw" id='redrawAccessory'></canvas>
+<canvas class="redraw" id='redrawHair'></canvas>
+<canvas class="redraw" id='redrawEyes'></canvas>
+<canvas class="redraw" id='redrawMouth'></canvas>
+</div>
+
+<button onclick="zoomIn();">Zoom In</button>
+<button onclick="zoomOut();">Zoom Out</button>
