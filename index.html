@@ -92,7 +92,7 @@
             input.height = 32;
             input.type = 'color'
             input.value = rgbToHex(colourData[i][0], colourData[i][1], colourData[i][2], colourData[i][3])
-            input.id = `hairColour${i}`
+            input.id = `${outputContainer}${i}`
             input.originalColour = [colourData[i][0], colourData[i][1], colourData[i][2], colourData[i][3]];
 
             h.appendChild(input);
