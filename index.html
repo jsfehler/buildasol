@@ -166,7 +166,7 @@
 
     var hairStyles = [
         'assets/hair_sol_01.png',
-        'assets/hair_ky_01.png'
+        'assets/hair_ky_01.png',
     ]
 
     hairIdx = 0;
@@ -195,6 +195,7 @@
     var eyesStyles = [
         'assets/eyes_sol_01.png',
         'assets/eyes_sol_02.png',
+        'assets/eyes_ky_01.png',
     ]
 
     eyesIdx = 0;
@@ -223,6 +224,8 @@
     var mouthStyles = [
         'assets/mouth_sol_01.png',
         'assets/mouth_sol_02.png',
+        'assets/mouth_ky_01.png',
+        'assets/mouth_ky_02.png',
     ]
 
     mouthIdx = 0;
@@ -245,6 +248,62 @@
         elem.onload = function () {
             scrapeColours('mouth', 'mouthColours');
             redrawPortrait('mouth', 'redrawMouth');
+        }
+    }
+
+    var bodyStyles = [
+        'assets/body_sol_01.png',
+        'assets/body_ky_01.png',
+    ]
+
+    bodyIdx = 0;
+
+    function swapBody(direction) {
+        bodyIdx += direction;
+
+        // Wrap scrolling through items
+        if (bodyIdx < 0) {
+            bodyIdx = bodyStyles.length - 1;
+        }
+
+        if (bodyIdx > bodyStyles.length - 1) {
+            bodyIdx = 0;
+        }
+
+        var elem = document.getElementById('body');
+        elem.src = bodyStyles[bodyIdx];
+
+        elem.onload = function () {
+            scrapeColours('body', 'bodyColours');
+            redrawPortrait('body', 'redrawBody');
+        }
+    }
+
+    var accStyles = [
+        'assets/accessory_none.png',
+        'assets/accessory_sol_01.png',
+    ]
+
+    accIdx = 0;
+
+    function swapAcc(direction) {
+        accIdx += direction;
+
+        // Wrap scrolling through items
+        if (accIdx < 0) {
+            accIdx = accStyles.length - 1;
+        }
+
+        if (accIdx > accStyles.length - 1) {
+            accIdx = 0;
+        }
+
+        var elem = document.getElementById('accessory');
+        elem.src = accStyles[accIdx];
+
+        elem.onload = function () {
+            scrapeColours('accessory', 'accessoryColours');
+            redrawPortrait('accessory', 'redrawAccessory');
         }
     }
 
@@ -334,8 +393,8 @@ div {
     </div>
 
     <div>Body Style:</div>
-    <button id='bodyPrev'><<</button>
-    <button id ='bodyNext'>>></button>
+    <button id='bodyPrev' onclick='swapBody(-1);'><<</button>
+    <button id ='bodyNext' onclick='swapBody(-1);'>>></button>
 </div>
 
 <div id='accessoryContainer'>
@@ -346,8 +405,8 @@ div {
     </div>
 
     <div>Accessory Style:</div>
-    <button id='accPrev'><<</button>
-    <button id ='accNext'>>></button>
+    <button id='accPrev' onclick='swapAcc(-1);'><<</button>
+    <button id ='accNext' onclick='swapAcc(-1);'>>></button>
 </div>
 
 <div id="redrawContainer">
