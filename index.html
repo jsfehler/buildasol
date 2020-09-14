@@ -341,11 +341,17 @@ div {
   width: 100%;
   height: 160px;
   display: flex;
+  margin-top: 25px;
 }
 
 #redrawContainer {
   width: 50%;
   margin: 0 auto;
+}
+
+#redrawContainer img {
+    margin-left: -4px;
+    margin-top: -7px;
 }
 
 .redraw {
@@ -362,11 +368,13 @@ div {
 <body>
     <div id='displayContainer'>
         <div id='redrawContainer'>
+            <img src='assets/frame_1.png' class='redraw'>
             <canvas class="redraw" id='redrawBody'></canvas>
             <canvas class="redraw" id='redrawAccessory'></canvas>
             <canvas class="redraw" id='redrawHair'></canvas>
             <canvas class="redraw" id='redrawEyes'></canvas>
             <canvas class="redraw" id='redrawMouth'></canvas>
+            <img src='assets/frame_0.png' class='redraw'>
         </div>
         <button onclick="zoomIn();">Zoom In</button>
         <button onclick="zoomOut();">Zoom Out</button>
