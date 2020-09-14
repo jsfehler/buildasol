@@ -124,8 +124,10 @@
     }
 
     function redrawPortrait(elementId, outputContainer) {
-        var c = document.getElementById(outputContainer);
-        redrawContext = c.getContext('2d')
+        // var c = document.getElementById(outputContainer);
+        var redrawCanvases = document.getElementsByClassName(outputContainer)
+        redrawContext1x = redrawCanvases[0].getContext('2d')
+        redrawContext2x = redrawCanvases[1].getContext('2d')
 
         var img = document.getElementById(elementId);
         var canvas = document.createElement('canvas');
@@ -150,14 +152,15 @@
                 }
 
                 if (ff) {
-                    var d = redrawContext.createImageData(1, 1);
+                    var d = redrawContext1x.createImageData(1, 1);
 
                     d.data[0] = ff.r;
                     d.data[1] = ff.g;
                     d.data[2] = ff.b;
                     d.data[3] = ff.a;
 
-                    redrawContext.putImageData(d, x, y);
+                    redrawContext1x.putImageData(d, x, y);
+                    redrawContext2x.putImageData(d, x, y);
                     ff = false;
                 }
             }
@@ -321,14 +324,6 @@
         redrawPortrait('mouth', 'redrawMouth');
     }
 
-    function zoomIn() {
-        document.getElementById('redrawContainer').setAttribute('style', 'zoom: 200%; image-rendering: pixelated;');
-    }
-
-    function zoomOut() {
-        document.getElementById('redrawContainer').setAttribute('style', 'zoom: 100%; image-rendering: pixelated;');
-    }
-
 </script>
 
 <style>
@@ -339,17 +334,29 @@ div {
 
 #displayContainer {
   width: 100%;
-  height: 160px;
+  height: 185px;
   display: flex;
   margin-top: 25px;
 }
 
 #redrawContainer {
-  width: 50%;
+  width: 25%;
   margin: 0 auto;
 }
 
 #redrawContainer img {
+    margin-left: -4px;
+    margin-top: -7px;
+}
+
+#redrawContainer2x {
+  width: 25%;
+  margin: 0 auto;
+  zoom: 200%;
+  image-rendering: pixelated;
+}
+
+#redrawContainer2x img {
     margin-left: -4px;
     margin-top: -7px;
 }
@@ -360,7 +367,11 @@ div {
 }
 
 #pieceModContainer > div {
-    display:block;
+  display:block;
+}
+
+.styleToggle {
+  vertical-align: top;
 }
 
 </style>
@@ -369,15 +380,24 @@ div {
     <div id='displayContainer'>
         <div id='redrawContainer'>
             <img src='assets/frame_1.png' class='redraw'>
-            <canvas class="redraw" id='redrawBody'></canvas>
-            <canvas class="redraw" id='redrawAccessory'></canvas>
-            <canvas class="redraw" id='redrawHair'></canvas>
-            <canvas class="redraw" id='redrawEyes'></canvas>
-            <canvas class="redraw" id='redrawMouth'></canvas>
+            <canvas class="redraw redrawBody"></canvas>
+            <canvas class="redraw redrawAccessory"></canvas>
+            <canvas class="redraw redrawHair"></canvas>
+            <canvas class="redraw redrawEyes"></canvas>
+            <canvas class="redraw redrawMouth"></canvas>
             <img src='assets/frame_0.png' class='redraw'>
         </div>
-        <button onclick="zoomIn();">Zoom In</button>
-        <button onclick="zoomOut();">Zoom Out</button>
+        
+        <div id='redrawContainer2x'>
+            <img src='assets/frame_1.png' class='redraw'>
+            <canvas class="redraw redrawBody"></canvas>
+            <canvas class="redraw redrawAccessory"></canvas>
+            <canvas class="redraw redrawHair"></canvas>
+            <canvas class="redraw redrawEyes"></canvas>
+            <canvas class="redraw redrawMouth"></canvas>
+            <img src='assets/frame_0.png' class='redraw'>
+        </div>
+
     </div>
 
     <img src='assets/hair_sol_01.png' id='hair' style='display:none;'>
@@ -394,9 +414,11 @@ div {
             <div id='hairColours' style='width:192px;'>
             </div>
 
-            <div>Hair Style:</div>
-            <button id='hairPrev' onclick='swapHair(-1);'><<</button>
-            <button id ='hairNext' onclick='swapHair(1);'>>></button>
+            <div class="styleToggle">
+                <div>Hair Style:</div>
+                <button id='hairPrev' onclick='swapHair(-1);'><<</button>
+                <button id ='hairNext' onclick='swapHair(1);'>>></button>
+            </div>
         </div>
 
         <div id='eyesContainer'>
@@ -406,9 +428,11 @@ div {
             <div id='eyesColours' style='width:192px;'>
             </div>
 
-            <div>Eyes Style:</div>
-            <button id='eyesPrev' onclick='swapEyes(-1);'><<</button>
-            <button id ='eyesNext' onclick='swapEyes(-1);'>>></button>
+            <div class="styleToggle">
+                <div>Eyes Style:</div>
+                <button id='eyesPrev' onclick='swapEyes(-1);'><<</button>
+                <button id ='eyesNext' onclick='swapEyes(-1);'>>></button>
+            </div>
         </div>
 
         <div id='mouthContainer'>
@@ -418,21 +442,27 @@ div {
             <div id='mouthColours' style='width:192px;'>
             </div>
 
-            <div>Mouth Style:</div>
-            <button id='mouthPrev' onclick='swapMouth(-1);'><<</button>
-            <button id ='mouthNext' onclick='swapMouth(-1);'>>></button>
+            <div class="styleToggle">
+                <div>Mouth Style:</div>
+                <button id='mouthPrev' onclick='swapMouth(-1);'><<</button>
+                <button id ='mouthNext' onclick='swapMouth(-1);'>>></button>
+            </div>
         </div>
 
         <div id='bodyContainer'>
             <div>Body Colours:</div>
             <button style='display:none;'>Reset</button>
+            
             <br>
+            
             <div id='bodyColours' style='width:192px;'>
             </div>
 
-            <div>Body Style:</div>
-            <button id='bodyPrev' onclick='swapBody(-1);'><<</button>
-            <button id ='bodyNext' onclick='swapBody(-1);'>>></button>
+            <div class="styleToggle">
+                <div>Body Style:</div>
+                <button id='bodyPrev' onclick='swapBody(-1);'><<</button>
+                <button id ='bodyNext' onclick='swapBody(-1);'>>></button>
+            </div>
         </div>
 
         <div id='accessoryContainer'>
@@ -442,9 +472,11 @@ div {
             <div id='accessoryColours' style='width:192px;'>
             </div>
 
-            <div>Accessory Style:</div>
-            <button id='accPrev' onclick='swapAcc(-1);'><<</button>
-            <button id ='accNext' onclick='swapAcc(-1);'>>></button>
+            <div class="styleToggle">
+                <div>Accessory Style:</div>
+                <button id='accPrev' onclick='swapAcc(-1);'><<</button>
+                <button id ='accNext' onclick='swapAcc(-1);'>>></button>
+            </div>
         </div>
     </div>
 
