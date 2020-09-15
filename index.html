@@ -248,7 +248,7 @@
         }
     }
 
-    function foo () {
+    function downloadPortrait () {
         var elem = document.getElementById('redrawContainer');
         html2canvas(elem).then(
             (canvas) => {
@@ -353,7 +353,7 @@ div {
     </div>
 
     <div id='downloadContainer'>
-        <button onclick="foo();">Download Portrait</button>
+        <button onclick="downloadPortrait();">Download Portrait</button>
     </div>
 
     <img src='assets/hair_sol_01.png' id='hair' style='display:none;'>
