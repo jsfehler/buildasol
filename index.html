@@ -257,6 +257,26 @@
         )
     }
 
+    function moveVertical(name, direction) {
+        elems = document.getElementsByClassName(name);
+        var style = window.getComputedStyle(elems[0]);
+        var margin = style.getPropertyValue('margin-top');
+        var margin_number = margin.replace('px', '')
+        
+        elems[0].style.marginTop = parseInt(margin_number) + direction;
+        elems[1].style.marginTop = parseInt(margin_number) + direction;
+    }
+
+    function moveHorizontal(name, direction) {
+        elems = document.getElementsByClassName(name);
+        var style = window.getComputedStyle(elems[0]);
+        var margin = style.getPropertyValue('margin-left');
+        var margin_number = margin.replace('px', '')
+        
+        elems[0].style.marginLeft = parseInt(margin_number) + direction;
+        elems[1].style.marginLeft = parseInt(margin_number) + direction;
+    }
+
     window.onload = function () {
         scrapeColours('hair', 'hairColours');
         scrapeColours('body', 'bodyColours');
@@ -374,6 +394,10 @@ div {
                 <div>Hair Style:</div>
                 <button id='hairPrev' onclick='swapHair(-1);'><<</button>
                 <button id ='hairNext' onclick='swapHair(1);'>>></button>
+                <button onclick="moveVertical('redrawHair', -1);">Move Up</button>
+                <button onclick="moveVertical('redrawHair', 1);">Move Down</button>
+                <button onclick="moveHorizontal('redrawHair', -1);">Move Left</button>
+                <button onclick="moveHorizontal('redrawHair', 1);">Move Right</button>
             </div>
         </div>
 
@@ -388,6 +412,10 @@ div {
                 <div>Eyes Style:</div>
                 <button id='eyesPrev' onclick='swapEyes(-1);'><<</button>
                 <button id ='eyesNext' onclick='swapEyes(-1);'>>></button>
+                <button onclick="moveVertical('redrawEyes', -1);">Move Up</button>
+                <button onclick="moveVertical('redrawEyes', 1);">Move Down</button>
+                <button onclick="moveHorizontal('redrawEyes', -1);">Move Left</button>
+                <button onclick="moveHorizontal('redrawEyes', 1);">Move Right</button>
             </div>
         </div>
 
@@ -402,6 +430,10 @@ div {
                 <div>Mouth Style:</div>
                 <button id='mouthPrev' onclick='swapMouth(-1);'><<</button>
                 <button id ='mouthNext' onclick='swapMouth(-1);'>>></button>
+                <button onclick="moveVertical('redrawMouth', -1);">Move Up</button>
+                <button onclick="moveVertical('redrawMouth', 1);">Move Down</button>
+                <button onclick="moveHorizontal('redrawMouth', -1);">Move Left</button>
+                <button onclick="moveHorizontal('redrawMouth', 1);">Move Right</button>
             </div>
         </div>
 
@@ -418,6 +450,10 @@ div {
                 <div>Body Style:</div>
                 <button id='bodyPrev' onclick='swapBody(-1);'><<</button>
                 <button id ='bodyNext' onclick='swapBody(-1);'>>></button>
+                <button onclick="moveVertical('redrawBody', -1);">Move Up</button>
+                <button onclick="moveVertical('redrawBody', 1);">Move Down</button>
+                <button onclick="moveHorizontal('redrawBody', -1);">Move Left</button>
+                <button onclick="moveHorizontal('redrawBody', 1);">Move Right</button>
             </div>
         </div>
 
@@ -432,6 +468,10 @@ div {
                 <div>Accessory Style:</div>
                 <button id='accPrev' onclick='swapAcc(-1);'><<</button>
                 <button id ='accNext' onclick='swapAcc(-1);'>>></button>
+                <button onclick="moveVertical('redrawAccessory', -1);">Move Up</button>
+                <button onclick="moveVertical('redrawAccessory', 1);">Move Down</button>
+                <button onclick="moveHorizontal('redrawAccessory', -1);">Move Left</button>
+                <button onclick="moveHorizontal('redrawAccessory', 1);">Move Right</button>
             </div>
         </div>
     </div>
