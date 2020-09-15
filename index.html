@@ -1,4 +1,6 @@
 <script src="js/colour_conversion.js"></script>
+<script src="js/html2canvas.min.js"></script>
+<script src="js/FileSaver.min.js"></script>
 <script>   
     // original: alternate
     var altSolHairPalette01 = {
@@ -7,8 +9,8 @@
         '#907256': '#71604b', // Light
         '#0b0401': '#0b0401' // Outline
     }
-    
-    var altSolBodyPalette01  = {
+
+    var altSolBodyPalette01 = {
         '#ea1d1d': '#a45044', // Mid Red
         '#61031c': '#674b59', // Dark Red
         '#383838': '#2e2c2f', // Mid Grey
@@ -21,7 +23,7 @@
         '#7a4026': '#692f2d', // Dark Skin 2
         '#1c0500': '#3e1e1e' // Dark Skin 3
     }
-    
+
     function scrapeColours(elementId, outputContainer) {
         // Scrape colours from an image
         var img = document.getElementById(elementId);
@@ -246,6 +248,15 @@
         }
     }
 
+    function foo () {
+        var elem = document.getElementById('redrawContainer');
+        html2canvas(elem).then(
+            (canvas) => {
+                canvas.toBlob((blob) => {saveAs(blob, 'new_portrait.png')});
+            }
+        )
+    }
+
     window.onload = function () {
         scrapeColours('hair', 'hairColours');
         scrapeColours('body', 'bodyColours');
@@ -276,30 +287,31 @@ div {
 }
 
 #redrawContainer {
-  width: 25%;
+  width: 72px;
+  height: 96px;
   margin: 0 auto;
 }
 
-#redrawContainer img {
-    margin-left: -4px;
-    margin-top: -7px;
+#redrawContainer canvas {
+  margin-left: 4px;
+  margin-top: 7px;
 }
 
 #redrawContainer2x {
-  width: 25%;
+  width: 72px;
+  height: 96px;
   margin: 0 auto;
   zoom: 200%;
   image-rendering: pixelated;
 }
 
-#redrawContainer2x img {
-    margin-left: -4px;
-    margin-top: -7px;
+#redrawContainer2x canvas {
+  margin-left: 4px;
+  margin-top: 7px;
 }
 
 .redraw {
   position: absolute;
-  margin: 0 auto;
 }
 
 #pieceModContainer > div {
@@ -308,6 +320,10 @@ div {
 
 .styleToggle {
   vertical-align: top;
+}
+
+#downloadContainer {
+  width: 100%;
 }
 
 </style>
@@ -334,6 +350,10 @@ div {
             <img src='assets/frame_0.png' class='redraw'>
         </div>
 
+    </div>
+
+    <div id='downloadContainer'>
+        <button onclick="foo();">Download Portrait</button>
     </div>
 
     <img src='assets/hair_sol_01.png' id='hair' style='display:none;'>
