@@ -1,4 +1,4 @@
-<script src="js/colour_conversion.js"</script>
+<script src="js/colour_conversion.js"></script>
 <script>   
     // original: alternate
     var altSolHairPalette01 = {
@@ -144,6 +144,10 @@
         }
     }
 
+    function mod(n, m) {
+      return ((n % m) + m) % m;
+    }
+
     var hairStyles = [
         'assets/hair_sol_01.png',
         'assets/hair_ky_01.png',
@@ -152,20 +156,11 @@
     hairIdx = 0;
 
     function swapHair(direction) {
-        hairIdx += direction;
-
         // Wrap scrolling through items
-        if (hairIdx < 0) {
-            hairIdx = hairStyles.length - 1;
-        }
-
-        if (hairIdx > hairStyles.length - 1) {
-            hairIdx = 0;
-        }
+        hairIdx = mod(hairIdx + direction, hairStyles.length);
 
         var elem = document.getElementById('hair');
         elem.src = hairStyles[hairIdx];
-
         elem.onload = function () {
             scrapeColours('hair', 'hairColours');
             redrawPortrait('hair', 'redrawHair');
@@ -181,20 +176,11 @@
     eyesIdx = 0;
 
     function swapEyes(direction) {
-        eyesIdx += direction;
-
         // Wrap scrolling through items
-        if (eyesIdx < 0) {
-            eyesIdx = eyesStyles.length - 1;
-        }
-
-        if (eyesIdx > eyesStyles.length - 1) {
-            eyesIdx = 0;
-        }
+        eyesIdx = mod(eyesIdx + direction, eyesStyles.length);
 
         var elem = document.getElementById('eyes');
         elem.src = eyesStyles[eyesIdx];
-
         elem.onload = function () {
             scrapeColours('eyes', 'eyesColours');
             redrawPortrait('eyes', 'redrawEyes');
@@ -211,20 +197,11 @@
     mouthIdx = 0;
 
     function swapMouth(direction) {
-        mouthIdx += direction;
-
         // Wrap scrolling through items
-        if (mouthIdx < 0) {
-            mouthIdx = mouthStyles.length - 1;
-        }
-
-        if (mouthIdx > mouthStyles.length - 1) {
-            mouthIdx = 0;
-        }
+        mouthIdx = mod(mouthIdx + direction, mouthStyles.length);
 
         var elem = document.getElementById('mouth');
         elem.src = mouthStyles[mouthIdx];
-
         elem.onload = function () {
             scrapeColours('mouth', 'mouthColours');
             redrawPortrait('mouth', 'redrawMouth');
@@ -239,20 +216,11 @@
     bodyIdx = 0;
 
     function swapBody(direction) {
-        bodyIdx += direction;
-
         // Wrap scrolling through items
-        if (bodyIdx < 0) {
-            bodyIdx = bodyStyles.length - 1;
-        }
-
-        if (bodyIdx > bodyStyles.length - 1) {
-            bodyIdx = 0;
-        }
+        bodyIdx = mod(bodyIdx + direction, bodyStyles.length);
 
         var elem = document.getElementById('body');
         elem.src = bodyStyles[bodyIdx];
-
         elem.onload = function () {
             scrapeColours('body', 'bodyColours');
             redrawPortrait('body', 'redrawBody');
@@ -267,20 +235,11 @@
     accIdx = 0;
 
     function swapAcc(direction) {
-        accIdx += direction;
-
         // Wrap scrolling through items
-        if (accIdx < 0) {
-            accIdx = accStyles.length - 1;
-        }
-
-        if (accIdx > accStyles.length - 1) {
-            accIdx = 0;
-        }
+        accIdx = mod(accIdx + direction, accStyles.length);
 
         var elem = document.getElementById('accessory');
         elem.src = accStyles[accIdx];
-
         elem.onload = function () {
             scrapeColours('accessory', 'accessoryColours');
             redrawPortrait('accessory', 'redrawAccessory');
@@ -293,7 +252,7 @@
         scrapeColours('accessory', 'accessoryColours');
         scrapeColours('eyes', 'eyesColours');
         scrapeColours('mouth', 'mouthColours');
-        
+
         redrawPortrait('hair', 'redrawHair');
         redrawPortrait('body', 'redrawBody');
         redrawPortrait('accessory', 'redrawAccessory');
