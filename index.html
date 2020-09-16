@@ -2,10 +2,11 @@
 <script src="js/scrape_colours.js"></script>
 <script src="js/redraw_portrait.js"></script>
 <script src="js/switch_to_template.js"></script>
+<script src="js/move.js"></script>
 
 <script src="lib/html2canvas.min.js"></script>
 <script src="lib/FileSaver.min.js"></script>
-<script>   
+<script>
     // original: alternate
     var altSolHairPalette01 = {
         '#583b27': '#57443b', // Mid
@@ -158,25 +159,6 @@
         )
     }
 
-    function moveVertical(name, direction) {
-        elems = document.getElementsByClassName(name);
-        var style = window.getComputedStyle(elems[0]);
-        var margin = style.getPropertyValue('margin-top');
-        var margin_number = margin.replace('px', '')
-        
-        elems[0].style.marginTop = parseInt(margin_number) + direction;
-        elems[1].style.marginTop = parseInt(margin_number) + direction;
-    }
-
-    function moveHorizontal(name, direction) {
-        elems = document.getElementsByClassName(name);
-        var style = window.getComputedStyle(elems[0]);
-        var margin = style.getPropertyValue('margin-left');
-        var margin_number = margin.replace('px', '')
-        
-        elems[0].style.marginLeft = parseInt(margin_number) + direction;
-        elems[1].style.marginLeft = parseInt(margin_number) + direction;
-    }
 
     window.onload = function () {
         scrapeColours('hair', 'hairColours', 'redrawHair');

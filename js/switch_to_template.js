@@ -25,6 +25,7 @@ function switchToTemplate(template) {
     elem.src = template.hairFront;
     
     elem.onload = function () {
+        resetPosition('redrawHair');
         scrapeColours('hair', 'hairColours', 'redrawHair');
         redrawPortrait('hair', 'redrawHair');
     }
@@ -33,6 +34,7 @@ function switchToTemplate(template) {
     elem.src = template.hairBack;
     
     elem.onload = function () {
+        resetPosition('redrawHairBack');
         scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
         redrawPortrait('hairBack', 'redrawHairBack');
     }
@@ -41,6 +43,7 @@ function switchToTemplate(template) {
     elem.src = template.eyes;
     
     elem.onload = function () {
+        resetPosition('redrawEyes');
         scrapeColours('eyes', 'eyesColours', 'redrawEyes');
         redrawPortrait('eyes', 'redrawEyes');
     }
@@ -49,6 +52,7 @@ function switchToTemplate(template) {
     elem.src = template.mouth;
     
     elem.onload = function () {
+        resetPosition('redrawMouth');
         scrapeColours('mouth', 'mouthColours', 'redrawMouth');
         redrawPortrait('mouth', 'redrawMouth');
     }
@@ -57,6 +61,7 @@ function switchToTemplate(template) {
     elem.src = template.body;
     
     elem.onload = function () {
+        resetPosition('redrawBody');
         scrapeColours('body', 'bodyColours', 'redrawBody');
         redrawPortrait('body', 'redrawBody');
     }
@@ -65,6 +70,7 @@ function switchToTemplate(template) {
     elem.src = template.accessory;
     
     elem.onload = function () {
+        resetPosition('redrawAccessory');
         scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
         redrawPortrait('accessory', 'redrawAccessory');
     }
