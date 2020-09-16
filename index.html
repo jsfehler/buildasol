@@ -83,6 +83,7 @@
                 redrawPortrait('accessory', 'redrawAccessory');
                 redrawPortrait('eyes', 'redrawEyes');
                 redrawPortrait('mouth', 'redrawMouth');
+                redrawPortrait('hairBack', 'redrawHairBack');
             })
 
             canvii.push(input);
@@ -151,8 +152,8 @@
     }
 
     var hairStyles = [
-        'assets/hair_sol_01.png',
-        'assets/hair_ky_01.png',
+        'assets/hair_front_sol_01.png',
+        'assets/hair_front_ky_01.png',
     ]
 
     hairIdx = 0;
@@ -166,6 +167,25 @@
         elem.onload = function () {
             scrapeColours('hair', 'hairColours');
             redrawPortrait('hair', 'redrawHair');
+        }
+    }
+
+    var hairBackStyles = [
+        'assets/hair_back_sol_01.png',
+        'assets/hair_back_none.png',
+    ]
+
+    hairBackIdx = 0;
+
+    function swapHairBack(direction) {
+        // Wrap scrolling through items
+        hairBackIdx = mod(hairBackIdx + direction, hairBackStyles.length);
+
+        var elem = document.getElementById('hair');
+        elem.src = hairBackStyles[hairBackIdx];
+        elem.onload = function () {
+            scrapeColours('hairBack', 'hairBackColours');
+            redrawPortrait('hairBack', 'redrawHairBack');
         }
     }
 
@@ -283,12 +303,14 @@
         scrapeColours('accessory', 'accessoryColours');
         scrapeColours('eyes', 'eyesColours');
         scrapeColours('mouth', 'mouthColours');
+        scrapeColours('hairBack', 'hairBackColours');
 
         redrawPortrait('hair', 'redrawHair');
         redrawPortrait('body', 'redrawBody');
         redrawPortrait('accessory', 'redrawAccessory');
         redrawPortrait('eyes', 'redrawEyes');
         redrawPortrait('mouth', 'redrawMouth');
+        redrawPortrait('hairBack', 'redrawHairBack');
     }
 
 </script>
@@ -352,16 +374,19 @@ div {
     <div id='displayContainer'>
         <div id='redrawContainer'>
             <img src='assets/frame_1.png' class='redraw'>
+            <canvas class="redraw redrawHairBack"></canvas>
             <canvas class="redraw redrawBody"></canvas>
             <canvas class="redraw redrawAccessory"></canvas>
             <canvas class="redraw redrawHair"></canvas>
             <canvas class="redraw redrawEyes"></canvas>
             <canvas class="redraw redrawMouth"></canvas>
+            
             <img src='assets/frame_0.png' class='redraw'>
         </div>
         
         <div id='redrawContainer2x'>
             <img src='assets/frame_1.png' class='redraw'>
+            <canvas class="redraw redrawHairBack"></canvas>
             <canvas class="redraw redrawBody"></canvas>
             <canvas class="redraw redrawAccessory"></canvas>
             <canvas class="redraw redrawHair"></canvas>
@@ -376,28 +401,47 @@ div {
         <button onclick="downloadPortrait();">Download Portrait</button>
     </div>
 
-    <img src='assets/hair_sol_01.png' id='hair' style='display:none;'>
+    <img src='assets/hair_front_sol_01.png' id='hair' style='display:none;'>
     <img src='assets/body_sol_01.png' id='body' style='display:none;'>
     <img src='assets/accessory_sol_01.png' id='accessory' style='display:none;'>
     <img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
     <img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
+    <img src='assets/hair_back_sol_01.png' id='hairBack' style='display:none;'>
 
     <div id='pieceModContainer'>
         <div id='hairContainer'>
-            <div>Hair Colours:</div>
+            <div>Hair Front Colours:</div>
             <button style='display:none;'>Reset</button>
             <br>
             <div id='hairColours' style='width:192px;'>
             </div>
 
             <div class="styleToggle">
-                <div>Hair Style:</div>
+                <div>Hair Front Style:</div>
                 <button id='hairPrev' onclick='swapHair(-1);'><<</button>
                 <button id ='hairNext' onclick='swapHair(1);'>>></button>
                 <button onclick="moveVertical('redrawHair', -1);">Move Up</button>
                 <button onclick="moveVertical('redrawHair', 1);">Move Down</button>
                 <button onclick="moveHorizontal('redrawHair', -1);">Move Left</button>
                 <button onclick="moveHorizontal('redrawHair', 1);">Move Right</button>
+            </div>
+        </div>
+
+        <div id='hairContainer'>
+            <div>Hair Back Colours:</div>
+            <button style='display:none;'>Reset</button>
+            <br>
+            <div id='hairBackColours' style='width:192px;'>
+            </div>
+
+            <div class="styleToggle">
+                <div>Hair Back Style:</div>
+                <button id='hairBackPrev' onclick='swapHairBack(-1);'><<</button>
+                <button id ='hairBackNext' onclick='swapHairBack(1);'>>></button>
+                <button onclick="moveVertical('redrawHairBack', -1);">Move Up</button>
+                <button onclick="moveVertical('redrawHairBack', 1);">Move Down</button>
+                <button onclick="moveHorizontal('redrawHairBack', -1);">Move Left</button>
+                <button onclick="moveHorizontal('redrawHairBack', 1);">Move Right</button>
             </div>
         </div>
 
