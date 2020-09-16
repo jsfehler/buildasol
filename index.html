@@ -1,4 +1,8 @@
 <script src="js/colour_conversion.js"></script>
+<script src="js/scrape_colours.js"></script>
+<script src="js/redraw_portrait.js"></script>
+<script src="js/switch_to_template.js"></script>
+
 <script src="lib/html2canvas.min.js"></script>
 <script src="lib/FileSaver.min.js"></script>
 <script>   
@@ -22,124 +26,6 @@
         '#ba6a3f': '#916159', // Dark Skin
         '#7a4026': '#692f2d', // Dark Skin 2
         '#1c0500': '#3e1e1e' // Dark Skin 3
-    }
-
-    function scrapeColours(elementId, outputContainer, redrawCanvas) {
-        // Scrape colours from an image
-        var img = document.getElementById(elementId);
-
-        // Create temp canvas to parse through image
-        var canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
-
-        var colourData = [];
-
-        var context = canvas.getContext('2d');
-        for (var y = 0; y <= canvas.height; y++) {
-            for (var x = 0; x <= canvas.width; x++) {
-                var pixelData = context.getImageData(x, y, 1, 1).data;
-
-                var pixelRGBA = [pixelData[0], pixelData[1], pixelData[2], pixelData[3]];
-
-                var skip = false;
-                // Ignore duplicate colours
-                for (var j = 0; j < colourData.length; j++) {
-
-                    if ((colourData[j][0] === pixelRGBA[0]) && (colourData[j][1] === pixelRGBA[1]) && (colourData[j][2] === pixelRGBA[2])) {
-                        skip = true;
-                        break;
-                    }
-                }
-
-                if (skip === false) {
-                    colourData.push(pixelRGBA);
-                }
-            }
-        }
-
-        // Delete temp canvas
-        canvas.remove();
-
-        // Create colour boxes
-        var h = document.getElementById(outputContainer);
-        var canvii = [];
-        for (var i = 0; i < colourData.length; i++) {
-            input = document.createElement('input');
-            input.width = 32;
-            input.height = 32;
-            input.type = 'color'
-            input.value = rgbToHex(colourData[i][0], colourData[i][1], colourData[i][2], colourData[i][3])
-            input.id = `${outputContainer}${i}`
-            input.originalColour = [colourData[i][0], colourData[i][1], colourData[i][2], colourData[i][3]];
-
-            h.appendChild(input);
-
-            // recolour sprite after picking
-            input.addEventListener('change', function() {
-                redrawPortrait(elementId, redrawCanvas);
-            })
-
-            canvii.push(input);
-
-            // Skip transparency
-            if ((colourData[i][0] === 0) && (colourData[i][1] === 0) && (colourData[i][2] === 0) && (colourData[i][3] === 0)) {
-                input.setAttribute('style', 'display:None;')
-            }
-
-        }
-        // Erase previous results
-        if (img.canvii !== undefined) {
-            for (var i = 0; i < img.canvii.length; i++) {
-                img.canvii[i].remove();
-            }
-        }
-        img.canvii = canvii;
-    }
-
-    function redrawPortrait(elementId, outputContainer) {
-        // var c = document.getElementById(outputContainer);
-        var redrawCanvases = document.getElementsByClassName(outputContainer)
-        redrawContext1x = redrawCanvases[0].getContext('2d')
-        redrawContext2x = redrawCanvases[1].getContext('2d')
-
-        var img = document.getElementById(elementId);
-        var canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
-
-        for (var y = 0; y <= 80; y++) {
-            for (var x = 0; x <= 64; x++) {
-                data = canvas.getContext('2d').getImageData(x, y, 1, 1);
-                rgba = data.data;
-
-                // For every pixel, check if colour has been replaced
-
-                ff = false;
-                for (var z = 0; z < img.canvii.length; z++) {
-                    if (rgba[0] === img.canvii[z].originalColour[0] && rgba[1] === img.canvii[z].originalColour[1] && rgba[2] === img.canvii[z].originalColour[2]) {
-                        ff = hexToRgb(img.canvii[z].value)
-                        ff.a = rgba[3];
-                        var zz = img.canvii[z].value
-                    }
-                }
-
-                if (ff) {
-                    var d = redrawContext1x.createImageData(1, 1);
-
-                    d.data[0] = ff.r;
-                    d.data[1] = ff.g;
-                    d.data[2] = ff.b;
-                    d.data[3] = ff.a;
-
-                    redrawContext1x.putImageData(d, x, y);
-                    redrawContext2x.putImageData(d, x, y);
-                    ff = false;
-                }
-            }
-        }
     }
 
     function mod(n, m) {
@@ -176,7 +62,7 @@
         // Wrap scrolling through items
         hairBackIdx = mod(hairBackIdx + direction, hairBackStyles.length);
 
-        var elem = document.getElementById('hair');
+        var elem = document.getElementById('hairBack');
         elem.src = hairBackStyles[hairBackIdx];
         elem.onload = function () {
             scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
@@ -359,7 +245,7 @@ div {
   vertical-align: top;
 }
 
-#downloadContainer {
+.row {
   width: 100%;
 }
 
@@ -392,7 +278,7 @@ div {
 
     </div>
 
-    <div id='downloadContainer'>
+    <div class="row" id='downloadContainer'>
         <button onclick="downloadPortrait();">Download Portrait</button>
     </div>
 
@@ -402,6 +288,12 @@ div {
     <img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
     <img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
     <img src='assets/hair_back_sol_01.png' id='hairBack' style='display:none;'>
+
+    <div class="row">
+        Character Templates:
+        <button onclick="switchToTemplate(solTemplate);">Sol</button>
+        <button onclick="switchToTemplate(kyTemplate);">Ky</button>
+    </div>
 
     <div id='pieceModContainer'>
         <div id='hairContainer'>
