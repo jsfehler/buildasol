@@ -24,7 +24,7 @@
         '#1c0500': '#3e1e1e' // Dark Skin 3
     }
 
-    function scrapeColours(elementId, outputContainer) {
+    function scrapeColours(elementId, outputContainer, redrawCanvas) {
         // Scrape colours from an image
         var img = document.getElementById(elementId);
 
@@ -78,12 +78,7 @@
 
             // recolour sprite after picking
             input.addEventListener('change', function() {
-                redrawPortrait('hair', 'redrawHair');
-                redrawPortrait('body', 'redrawBody');
-                redrawPortrait('accessory', 'redrawAccessory');
-                redrawPortrait('eyes', 'redrawEyes');
-                redrawPortrait('mouth', 'redrawMouth');
-                redrawPortrait('hairBack', 'redrawHairBack');
+                redrawPortrait(elementId, redrawCanvas);
             })
 
             canvii.push(input);
@@ -165,7 +160,7 @@
         var elem = document.getElementById('hair');
         elem.src = hairStyles[hairIdx];
         elem.onload = function () {
-            scrapeColours('hair', 'hairColours');
+            scrapeColours('hair', 'hairColours', 'redrawHair');
             redrawPortrait('hair', 'redrawHair');
         }
     }
@@ -184,7 +179,7 @@
         var elem = document.getElementById('hair');
         elem.src = hairBackStyles[hairBackIdx];
         elem.onload = function () {
-            scrapeColours('hairBack', 'hairBackColours');
+            scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
             redrawPortrait('hairBack', 'redrawHairBack');
         }
     }
@@ -204,7 +199,7 @@
         var elem = document.getElementById('eyes');
         elem.src = eyesStyles[eyesIdx];
         elem.onload = function () {
-            scrapeColours('eyes', 'eyesColours');
+            scrapeColours('eyes', 'eyesColours', 'redrawEyes');
             redrawPortrait('eyes', 'redrawEyes');
         }
     }
@@ -225,7 +220,7 @@
         var elem = document.getElementById('mouth');
         elem.src = mouthStyles[mouthIdx];
         elem.onload = function () {
-            scrapeColours('mouth', 'mouthColours');
+            scrapeColours('mouth', 'mouthColours', 'redrawMouth');
             redrawPortrait('mouth', 'redrawMouth');
         }
     }
@@ -244,7 +239,7 @@
         var elem = document.getElementById('body');
         elem.src = bodyStyles[bodyIdx];
         elem.onload = function () {
-            scrapeColours('body', 'bodyColours');
+            scrapeColours('body', 'bodyColours', 'redrawBody');
             redrawPortrait('body', 'redrawBody');
         }
     }
@@ -263,7 +258,7 @@
         var elem = document.getElementById('accessory');
         elem.src = accStyles[accIdx];
         elem.onload = function () {
-            scrapeColours('accessory', 'accessoryColours');
+            scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
             redrawPortrait('accessory', 'redrawAccessory');
         }
     }
@@ -298,12 +293,12 @@
     }
 
     window.onload = function () {
-        scrapeColours('hair', 'hairColours');
-        scrapeColours('body', 'bodyColours');
-        scrapeColours('accessory', 'accessoryColours');
-        scrapeColours('eyes', 'eyesColours');
-        scrapeColours('mouth', 'mouthColours');
-        scrapeColours('hairBack', 'hairBackColours');
+        scrapeColours('hair', 'hairColours', 'redrawHair');
+        scrapeColours('body', 'bodyColours', 'redrawBody');
+        scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
+        scrapeColours('eyes', 'eyesColours', 'redrawEyes');
+        scrapeColours('mouth', 'mouthColours', 'redrawMouth');
+        scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
 
         redrawPortrait('hair', 'redrawHair');
         redrawPortrait('body', 'redrawBody');
