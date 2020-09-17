@@ -19,8 +19,27 @@ var kyTemplate = {
 }
 
 
+var nyukiTemplate = {
+    'hairFront': 'assets/hair_front_nyuki_01.png',
+    'hairBack': 'assets/hair_back_nyuki_01.png',
+    'eyes': 'assets/eyes_nyuki_01.png',
+    'mouth': 'assets/mouth_nyuki_01.png',
+    'body': 'assets/body_nyuki_01.png',
+    'accessory': 'assets/accessory_none.png',
+}
+
+
 // Swap all parts to a template
 function switchToTemplate(template) {
+    var elem = document.getElementById('body');
+    elem.src = template.body;
+    
+    elem.onload = function () {
+        resetPosition('redrawBody');
+        scrapeColours('body', 'bodyColours', 'redrawBody');
+        redrawPortrait('body', 'redrawBody');
+    }
+
     var elem = document.getElementById('hair');
     elem.src = template.hairFront;
     
@@ -56,16 +75,7 @@ function switchToTemplate(template) {
         scrapeColours('mouth', 'mouthColours', 'redrawMouth');
         redrawPortrait('mouth', 'redrawMouth');
     }
-    
-    var elem = document.getElementById('body');
-    elem.src = template.body;
-    
-    elem.onload = function () {
-        resetPosition('redrawBody');
-        scrapeColours('body', 'bodyColours', 'redrawBody');
-        redrawPortrait('body', 'redrawBody');
-    }
-    
+
     var elem = document.getElementById('accessory');
     elem.src = template.accessory;
     
