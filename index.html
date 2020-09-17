@@ -1,398 +1,403 @@
-<script src="js/colour_conversion.js"></script>
-<script src="js/scrape_colours.js"></script>
-<script src="js/redraw_portrait.js"></script>
-<script src="js/switch_to_template.js"></script>
-<script src="js/move.js"></script>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bulma.min.css">
+        <script src="js/colour_conversion.js"></script>
+        <script src="js/scrape_colours.js"></script>
+        <script src="js/redraw_portrait.js"></script>
+        <script src="js/switch_to_template.js"></script>
+        <script src="js/move.js"></script>
 
-<script src="lib/html2canvas.min.js"></script>
-<script src="lib/FileSaver.min.js"></script>
-<script>
-    // original: alternate
-    var altSolHairPalette01 = {
-        '#583b27': '#57443b', // Mid
-        '#341b0f': '#312d2e', // Dark
-        '#907256': '#71604b', // Light
-        '#0b0401': '#0b0401' // Outline
-    }
-
-    var altSolBodyPalette01 = {
-        '#ea1d1d': '#a45044', // Mid Red
-        '#61031c': '#674b59', // Dark Red
-        '#383838': '#2e2c2f', // Mid Grey
-        '#161616': '#2e2c2f', // Dark Grey
-        '#5c5c5c': '#686460', // Light Grey
-        
-        '#f7c697': '#f7c697', // Light Skin
-        '#e8a15e': '#e3b281', // Mid Skin
-        '#ba6a3f': '#916159', // Dark Skin
-        '#7a4026': '#692f2d', // Dark Skin 2
-        '#1c0500': '#3e1e1e' // Dark Skin 3
-    }
-
-    function mod(n, m) {
-      return ((n % m) + m) % m;
-    }
-
-    var hairStyles = [
-        'assets/hair_front_sol_01.png',
-        'assets/hair_front_ky_01.png',
-        'assets/hair_front_nyuki_01.png',
-    ]
-
-    hairIdx = 0;
-
-    function swapHair(direction) {
-        // Wrap scrolling through items
-        hairIdx = mod(hairIdx + direction, hairStyles.length);
-
-        var elem = document.getElementById('hair');
-        elem.src = hairStyles[hairIdx];
-        elem.onload = function () {
-            scrapeColours('hair', 'hairColours', 'redrawHair');
-            redrawPortrait('hair', 'redrawHair');
-        }
-    }
-
-    var hairBackStyles = [
-        'assets/hair_back_sol_01.png',
-        'assets/hair_back_nyuki_01.png',
-        'assets/hair_back_none.png',
-    ]
-
-    hairBackIdx = 0;
-
-    function swapHairBack(direction) {
-        // Wrap scrolling through items
-        hairBackIdx = mod(hairBackIdx + direction, hairBackStyles.length);
-
-        var elem = document.getElementById('hairBack');
-        elem.src = hairBackStyles[hairBackIdx];
-        elem.onload = function () {
-            scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
-            redrawPortrait('hairBack', 'redrawHairBack');
-        }
-    }
-
-    var eyesStyles = [
-        'assets/eyes_sol_01.png',
-        'assets/eyes_sol_02.png',
-        'assets/eyes_ky_01.png',
-        'assets/eyes_nyuki_01.png',
-    ]
-
-    eyesIdx = 0;
-
-    function swapEyes(direction) {
-        // Wrap scrolling through items
-        eyesIdx = mod(eyesIdx + direction, eyesStyles.length);
-
-        var elem = document.getElementById('eyes');
-        elem.src = eyesStyles[eyesIdx];
-        elem.onload = function () {
-            scrapeColours('eyes', 'eyesColours', 'redrawEyes');
-            redrawPortrait('eyes', 'redrawEyes');
-        }
-    }
-
-    var mouthStyles = [
-        'assets/mouth_sol_01.png',
-        'assets/mouth_sol_02.png',
-        'assets/mouth_ky_01.png',
-        'assets/mouth_ky_02.png',
-        'assets/mouth_nyuki_01.png',
-    ]
-
-    mouthIdx = 0;
-
-    function swapMouth(direction) {
-        // Wrap scrolling through items
-        mouthIdx = mod(mouthIdx + direction, mouthStyles.length);
-
-        var elem = document.getElementById('mouth');
-        elem.src = mouthStyles[mouthIdx];
-        elem.onload = function () {
-            scrapeColours('mouth', 'mouthColours', 'redrawMouth');
-            redrawPortrait('mouth', 'redrawMouth');
-        }
-    }
-
-    var bodyStyles = [
-        'assets/body_sol_01.png',
-        'assets/body_ky_01.png',
-        'assets/body_nyuki_01.png',
-    ]
-
-    bodyIdx = 0;
-
-    function swapBody(direction) {
-        // Wrap scrolling through items
-        bodyIdx = mod(bodyIdx + direction, bodyStyles.length);
-
-        var elem = document.getElementById('body');
-        elem.src = bodyStyles[bodyIdx];
-        elem.onload = function () {
-            scrapeColours('body', 'bodyColours', 'redrawBody');
-            redrawPortrait('body', 'redrawBody');
-        }
-    }
-
-    var accStyles = [
-        'assets/accessory_none.png',
-        'assets/accessory_sol_01.png',
-    ]
-
-    accIdx = 0;
-
-    function swapAcc(direction) {
-        // Wrap scrolling through items
-        accIdx = mod(accIdx + direction, accStyles.length);
-
-        var elem = document.getElementById('accessory');
-        elem.src = accStyles[accIdx];
-        elem.onload = function () {
-            scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
-            redrawPortrait('accessory', 'redrawAccessory');
-        }
-    }
-
-    function downloadPortrait () {
-        var elem = document.getElementById('redrawContainer');
-        html2canvas(elem).then(
-            (canvas) => {
-                canvas.toBlob((blob) => {saveAs(blob, 'new_portrait.png')});
+        <script src="lib/html2canvas.min.js"></script>
+        <script src="lib/FileSaver.min.js"></script>
+        <script>
+            // original: alternate
+            var altSolHairPalette01 = {
+                '#583b27': '#57443b', // Mid
+                '#341b0f': '#312d2e', // Dark
+                '#907256': '#71604b', // Light
+                '#0b0401': '#0b0401' // Outline
             }
-        )
-    }
+
+            var altSolBodyPalette01 = {
+                '#ea1d1d': '#a45044', // Mid Red
+                '#61031c': '#674b59', // Dark Red
+                '#383838': '#2e2c2f', // Mid Grey
+                '#161616': '#2e2c2f', // Dark Grey
+                '#5c5c5c': '#686460', // Light Grey
+                
+                '#f7c697': '#f7c697', // Light Skin
+                '#e8a15e': '#e3b281', // Mid Skin
+                '#ba6a3f': '#916159', // Dark Skin
+                '#7a4026': '#692f2d', // Dark Skin 2
+                '#1c0500': '#3e1e1e' // Dark Skin 3
+            }
+
+            function mod(n, m) {
+              return ((n % m) + m) % m;
+            }
+
+            var hairStyles = [
+                'assets/hair_front_sol_01.png',
+                'assets/hair_front_ky_01.png',
+                'assets/hair_front_nyuki_01.png',
+            ]
+
+            hairIdx = 0;
+
+            function swapHair(direction) {
+                // Wrap scrolling through items
+                hairIdx = mod(hairIdx + direction, hairStyles.length);
+
+                var elem = document.getElementById('hair');
+                elem.src = hairStyles[hairIdx];
+                elem.onload = function () {
+                    scrapeColours('hair', 'hairColours', 'redrawHair');
+                    redrawPortrait('hair', 'redrawHair');
+                }
+            }
+
+            var hairBackStyles = [
+                'assets/hair_back_sol_01.png',
+                'assets/hair_back_nyuki_01.png',
+                'assets/hair_back_none.png',
+            ]
+
+            hairBackIdx = 0;
+
+            function swapHairBack(direction) {
+                // Wrap scrolling through items
+                hairBackIdx = mod(hairBackIdx + direction, hairBackStyles.length);
+
+                var elem = document.getElementById('hairBack');
+                elem.src = hairBackStyles[hairBackIdx];
+                elem.onload = function () {
+                    scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
+                    redrawPortrait('hairBack', 'redrawHairBack');
+                }
+            }
+
+            var eyesStyles = [
+                'assets/eyes_sol_01.png',
+                'assets/eyes_sol_02.png',
+                'assets/eyes_ky_01.png',
+                'assets/eyes_nyuki_01.png',
+            ]
+
+            eyesIdx = 0;
+
+            function swapEyes(direction) {
+                // Wrap scrolling through items
+                eyesIdx = mod(eyesIdx + direction, eyesStyles.length);
+
+                var elem = document.getElementById('eyes');
+                elem.src = eyesStyles[eyesIdx];
+                elem.onload = function () {
+                    scrapeColours('eyes', 'eyesColours', 'redrawEyes');
+                    redrawPortrait('eyes', 'redrawEyes');
+                }
+            }
+
+            var mouthStyles = [
+                'assets/mouth_sol_01.png',
+                'assets/mouth_sol_02.png',
+                'assets/mouth_ky_01.png',
+                'assets/mouth_ky_02.png',
+                'assets/mouth_nyuki_01.png',
+            ]
+
+            mouthIdx = 0;
+
+            function swapMouth(direction) {
+                // Wrap scrolling through items
+                mouthIdx = mod(mouthIdx + direction, mouthStyles.length);
+
+                var elem = document.getElementById('mouth');
+                elem.src = mouthStyles[mouthIdx];
+                elem.onload = function () {
+                    scrapeColours('mouth', 'mouthColours', 'redrawMouth');
+                    redrawPortrait('mouth', 'redrawMouth');
+                }
+            }
+
+            var bodyStyles = [
+                'assets/body_sol_01.png',
+                'assets/body_ky_01.png',
+                'assets/body_nyuki_01.png',
+            ]
+
+            bodyIdx = 0;
+
+            function swapBody(direction) {
+                // Wrap scrolling through items
+                bodyIdx = mod(bodyIdx + direction, bodyStyles.length);
+
+                var elem = document.getElementById('body');
+                elem.src = bodyStyles[bodyIdx];
+                elem.onload = function () {
+                    scrapeColours('body', 'bodyColours', 'redrawBody');
+                    redrawPortrait('body', 'redrawBody');
+                }
+            }
+
+            var accStyles = [
+                'assets/accessory_none.png',
+                'assets/accessory_sol_01.png',
+            ]
+
+            accIdx = 0;
+
+            function swapAcc(direction) {
+                // Wrap scrolling through items
+                accIdx = mod(accIdx + direction, accStyles.length);
+
+                var elem = document.getElementById('accessory');
+                elem.src = accStyles[accIdx];
+                elem.onload = function () {
+                    scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
+                    redrawPortrait('accessory', 'redrawAccessory');
+                }
+            }
+
+            function downloadPortrait () {
+                var elem = document.getElementById('redrawContainer');
+                html2canvas(elem).then(
+                    (canvas) => {
+                        canvas.toBlob((blob) => {saveAs(blob, 'new_portrait.png')});
+                    }
+                )
+            }
 
 
-    window.onload = function () {
-        scrapeColours('hair', 'hairColours', 'redrawHair');
-        scrapeColours('body', 'bodyColours', 'redrawBody');
-        scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
-        scrapeColours('eyes', 'eyesColours', 'redrawEyes');
-        scrapeColours('mouth', 'mouthColours', 'redrawMouth');
-        scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
+            window.onload = function () {
+                scrapeColours('hair', 'hairColours', 'redrawHair');
+                scrapeColours('body', 'bodyColours', 'redrawBody');
+                scrapeColours('accessory', 'accessoryColours', 'redrawAccessory');
+                scrapeColours('eyes', 'eyesColours', 'redrawEyes');
+                scrapeColours('mouth', 'mouthColours', 'redrawMouth');
+                scrapeColours('hairBack', 'hairBackColours', 'redrawHairBack');
 
-        redrawPortrait('hair', 'redrawHair');
-        redrawPortrait('body', 'redrawBody');
-        redrawPortrait('accessory', 'redrawAccessory');
-        redrawPortrait('eyes', 'redrawEyes');
-        redrawPortrait('mouth', 'redrawMouth');
-        redrawPortrait('hairBack', 'redrawHairBack');
-    }
+                redrawPortrait('hair', 'redrawHair');
+                redrawPortrait('body', 'redrawBody');
+                redrawPortrait('accessory', 'redrawAccessory');
+                redrawPortrait('eyes', 'redrawEyes');
+                redrawPortrait('mouth', 'redrawMouth');
+                redrawPortrait('hairBack', 'redrawHairBack');
+            }
 
-</script>
+        </script>
 
-<style>
+        <style>
 
-div {
-  display:inline-block;
-}
+        div {
+          display:inline-block;
+        }
 
-#displayContainer {
-  width: 100%;
-  height: 185px;
-  display: flex;
-  margin-top: 50px;
-}
+        #displayContainer {
+          width: 100%;
+          height: 185px;
+          display: flex;
+          margin-top: 50px;
+        }
 
-#redrawContainer {
-  width: 72px;
-  height: 96px;
-  margin: 0 auto;
-}
+        #redrawContainer {
+          width: 72px;
+          height: 96px;
+          margin: 0 auto;
+        }
 
-#redrawContainer canvas {
-  margin-left: 4px;
-  margin-top: 7px;
-}
+        #redrawContainer2x {
+          width: 72px;
+          height: 96px;
+          margin: 0 auto;
+          transform: scale(2, 2);
+          image-rendering: pixelated;
+        }
 
-#redrawContainer2x {
-  width: 72px;
-  height: 96px;
-  margin: 0 auto;
-  transform: scale(2, 2);
-  image-rendering: pixelated;
-}
+        .redrawPosition {
+          margin-left: 4px;
+          margin-top: 7px;
+        }
 
-#redrawContainer2x canvas {
-  margin-left: 4px;
-  margin-top: 7px;
-}
+        .redraw {
+          position: absolute;
+        }
 
-.redraw {
-  position: absolute;
-}
-
-#pieceModContainer > div {
-  display:block;
-}
-
-.styleToggle {
-  vertical-align: top;
-}
-
-.row {
-  width: 100%;
-}
-
-</style>
-
-<body>
-    <div id='displayContainer'>
-        <div id='redrawContainer'>
-            <img src='assets/frame_1.png' class='redraw'>
-            <canvas class="redraw redrawHairBack"></canvas>
-            <canvas class="redraw redrawBody"></canvas>
-            <canvas class="redraw redrawAccessory"></canvas>
-            <canvas class="redraw redrawHair"></canvas>
-            <canvas class="redraw redrawEyes"></canvas>
-            <canvas class="redraw redrawMouth"></canvas>
+        </style>
+    </head>
+    <body>
+        <div id='displayContainer'>
+            <div id='redrawContainer'>
+                <img src='assets/frame_1.png' class='redraw'>
+                <canvas class="redraw redrawHairBack redrawPosition"></canvas>
+                <canvas class="redraw redrawBody redrawPosition"></canvas>
+                <canvas class="redraw redrawAccessory redrawPosition"></canvas>
+                <canvas class="redraw redrawHair redrawPosition"></canvas>
+                <canvas class="redraw redrawEyes redrawPosition"></canvas>
+                <canvas class="redraw redrawMouth redrawPosition"></canvas>
+                
+                <img src='assets/frame_0.png' class='redraw'>
+            </div>
             
-            <img src='assets/frame_0.png' class='redraw'>
-        </div>
-        
-        <div id='redrawContainer2x'>
-            <img src='assets/frame_1.png' class='redraw'>
-            <canvas class="redraw redrawHairBack"></canvas>
-            <canvas class="redraw redrawBody"></canvas>
-            <canvas class="redraw redrawAccessory"></canvas>
-            <canvas class="redraw redrawHair"></canvas>
-            <canvas class="redraw redrawEyes"></canvas>
-            <canvas class="redraw redrawMouth"></canvas>
-            <img src='assets/frame_0.png' class='redraw'>
-        </div>
-
-    </div>
-
-    <div class="row" id='downloadContainer'>
-        <button onclick="downloadPortrait();">Download Portrait</button>
-    </div>
-
-    <img src='assets/hair_front_sol_01.png' id='hair' style='display:none;'>
-    <img src='assets/body_sol_01.png' id='body' style='display:none;'>
-    <img src='assets/accessory_sol_01.png' id='accessory' style='display:none;'>
-    <img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
-    <img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
-    <img src='assets/hair_back_sol_01.png' id='hairBack' style='display:none;'>
-
-    <div class="row">
-        Character Templates:
-        <button onclick="switchToTemplate(solTemplate);">Sol</button>
-        <button onclick="switchToTemplate(kyTemplate);">Ky</button>
-        <button onclick="switchToTemplate(nyukiTemplate);">Nagoriyuki</button>
-    </div>
-
-    <div id='pieceModContainer'>
-        <div id='hairContainer'>
-            <div>Hair Front Colours:</div>
-            <button style='display:none;'>Reset</button>
-            <br>
-            <div id='hairColours' style='width:192px;'>
-            </div>
-
-            <div class="styleToggle">
-                <div>Hair Front Style:</div>
-                <button id='hairPrev' onclick='swapHair(-1);'><<</button>
-                <button id ='hairNext' onclick='swapHair(1);'>>></button>
-                <button onclick="moveVertical('redrawHair', -1);">Move Up</button>
-                <button onclick="moveVertical('redrawHair', 1);">Move Down</button>
-                <button onclick="moveHorizontal('redrawHair', -1);">Move Left</button>
-                <button onclick="moveHorizontal('redrawHair', 1);">Move Right</button>
+            <div id='redrawContainer2x'>
+                <img src='assets/frame_1.png' class='redraw'>
+                <canvas class="redraw redrawHairBack redrawPosition"></canvas>
+                <canvas class="redraw redrawBody redrawPosition"></canvas>
+                <canvas class="redraw redrawAccessory redrawPosition"></canvas>
+                <canvas class="redraw redrawHair redrawPosition"></canvas>
+                <canvas class="redraw redrawEyes redrawPosition"></canvas>
+                <canvas class="redraw redrawMouth redrawPosition"></canvas>
+                <img src='assets/frame_0.png' class='redraw'>
             </div>
         </div>
 
-        <div id='hairContainer'>
-            <div>Hair Back Colours:</div>
-            <button style='display:none;'>Reset</button>
-            <br>
-            <div id='hairBackColours' style='width:192px;'>
-            </div>
+        <img src='assets/hair_front_sol_01.png' id='hair' style='display:none;'>
+        <img src='assets/body_sol_01.png' id='body' style='display:none;'>
+        <img src='assets/accessory_sol_01.png' id='accessory' style='display:none;'>
+        <img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
+        <img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
+        <img src='assets/hair_back_sol_01.png' id='hairBack' style='display:none;'>
 
-            <div class="styleToggle">
-                <div>Hair Back Style:</div>
-                <button id='hairBackPrev' onclick='swapHairBack(-1);'><<</button>
-                <button id ='hairBackNext' onclick='swapHairBack(1);'>>></button>
-                <button onclick="moveVertical('redrawHairBack', -1);">Move Up</button>
-                <button onclick="moveVertical('redrawHairBack', 1);">Move Down</button>
-                <button onclick="moveHorizontal('redrawHairBack', -1);">Move Left</button>
-                <button onclick="moveHorizontal('redrawHairBack', 1);">Move Right</button>
+        <div class="columns">
+            <div class="column">
+                <div class="container">
+                    <div class="notification">
+                        <button class="button is-primary is-small" onclick="downloadPortrait();">Download Portrait</button>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div id='eyesContainer'>
-            <div>Eyes Colours:</div>
-            <button style='display:none;'>Reset</button>
-            <br>
-            <div id='eyesColours' style='width:192px;'>
-            </div>
-
-            <div class="styleToggle">
-                <div>Eyes Style:</div>
-                <button id='eyesPrev' onclick='swapEyes(-1);'><<</button>
-                <button id ='eyesNext' onclick='swapEyes(1);'>>></button>
-                <button onclick="moveVertical('redrawEyes', -1);">Move Up</button>
-                <button onclick="moveVertical('redrawEyes', 1);">Move Down</button>
-                <button onclick="moveHorizontal('redrawEyes', -1);">Move Left</button>
-                <button onclick="moveHorizontal('redrawEyes', 1);">Move Right</button>
+            <div class="column">
+                <div class="container">
+                    <div class="notification">
+                        <h5 class="title is-5">Character Templates</h5>
+                        <button class="button is-small is-outlined" onclick="switchToTemplate(solTemplate);">Sol</button>
+                        <button class="button is-small is-outlined" onclick="switchToTemplate(kyTemplate);">Ky</button>
+                        <button class="button is-small is-outlined" onclick="switchToTemplate(nyukiTemplate);">Nagoriyuki</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id='mouthContainer'>
-            <div>Mouth Colours:</div>
-            <button style='display:none;'>Reset</button>
-            <br>
-            <div id='mouthColours' style='width:192px;'>
+        <div id='pieceModContainer'>
+            <div class='block' id='hairContainer'>
+                <h5 class="title is-5">Hair Front</h5>
+                <button style='display:none;'>Reset</button>
+                Colours
+                <div id='hairColours' style='width:192px;'>
+                </div>
+
+                <div>
+                    <div>Style</div>
+                    <button class="button is-small is-outlined" id='hairPrev' onclick='swapHair(-1);'><<</button>
+                    <button class="button is-small is-outlined" id ='hairNext' onclick='swapHair(1);'>>></button>
+
+                    <div>Move</div>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawHair', -1);">Up</button>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawHair', 1);">Down</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawHair', -1);">Left</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawHair', 1);">Right</button>
+                </div>
             </div>
 
-            <div class="styleToggle">
-                <div>Mouth Style:</div>
-                <button id='mouthPrev' onclick='swapMouth(-1);'><<</button>
-                <button id ='mouthNext' onclick='swapMouth(1);'>>></button>
-                <button onclick="moveVertical('redrawMouth', -1);">Move Up</button>
-                <button onclick="moveVertical('redrawMouth', 1);">Move Down</button>
-                <button onclick="moveHorizontal('redrawMouth', -1);">Move Left</button>
-                <button onclick="moveHorizontal('redrawMouth', 1);">Move Right</button>
+            <div class='block' id='hairContainer'>
+                <h5 class="title is-5">Hair Back</h5>
+                <button style='display:none;'>Reset</button>
+                Colours
+                <div id='hairBackColours' style='width:192px;'>
+                </div>
+
+                <div>
+                    <div>Style</div>
+                    <button class="button is-small is-outlined" id='hairBackPrev' onclick='swapHairBack(-1);'><<</button>
+                    <button class="button is-small is-outlined" id ='hairBackNext' onclick='swapHairBack(1);'>>></button>
+                    
+                    <div>Move</div>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawHairBack', -1);">Up</button>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawHairBack', 1);">Down</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawHairBack', -1);">Left</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawHairBack', 1);">Right</button>
+                </div>
+            </div>
+
+            <div class='block' id='eyesContainer'>
+                <h5 class="title is-5">Eyes</h5>
+                <button style='display:none;'>Reset</button>
+                Colours
+                <div id='eyesColours' style='width:192px;'>
+                </div>
+
+                <div>
+                    <div>Style</div>
+                    <button class="button is-small is-outlined" id='eyesPrev' onclick='swapEyes(-1);'><<</button>
+                    <button class="button is-small is-outlined" id ='eyesNext' onclick='swapEyes(1);'>>></button>
+                    
+                    <div>Move</div>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawEyes', -1);">Up</button>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawEyes', 1);">Down</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawEyes', -1);">Left</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawEyes', 1);">Right</button>
+                </div>
+            </div>
+
+            <div class='block' id='mouthContainer'>
+                <h5 class="title is-5">Mouth</h5>
+                <button style='display:none;'>Reset</button>
+                Colours
+                <div id='mouthColours' style='width:192px;'>
+                </div>
+
+                <div>
+                    <div>Style</div>
+                    <button class="button is-small is-outlined" id='mouthPrev' onclick='swapMouth(-1);'><<</button>
+                    <button class="button is-small is-outlined" id ='mouthNext' onclick='swapMouth(1);'>>></button>
+                    
+                    <div>Move</div>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawMouth', -1);">Up</button>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawMouth', 1);">Down</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawMouth', -1);">Left</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawMouth', 1);">Right</button>
+                </div>
+            </div>
+
+            <div class='block' id='bodyContainer'>
+                <h5 class="title is-5">Body</h5>
+                <button style='display:none;'>Reset</button>
+                Colours
+                <div id='bodyColours' style='width:192px;'>
+                </div>
+
+                <div>
+                    <div>Style</div>
+                    <button class="button is-small is-outlined" id='bodyPrev' onclick='swapBody(-1);'><<</button>
+                    <button class="button is-small is-outlined" id ='bodyNext' onclick='swapBody(1);'>>></button>
+                    
+                    <div>Move</div>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawBody', -1);">Up</button>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawBody', 1);">Down</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawBody', -1);">Left</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawBody', 1);">Right</button>
+                </div>
+            </div>
+
+            <div class='block' id='accessoryContainer'>
+                <h5 class="title is-5">Accessory</h5>
+                <button style='display:none;'>Reset</button>
+                Colours
+                <div id='accessoryColours' style='width:192px;'>
+                </div>
+
+                <div>
+                    <div>Style</div>
+                    <button class="button is-small is-outlined" id='accPrev' onclick='swapAcc(-1);'><<</button>
+                    <button class="button is-small is-outlined" id ='accNext' onclick='swapAcc(1);'>>></button>
+                    
+                    <div>Move</div>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawAccessory', -1);">Up</button>
+                    <button class="button is-small is-outlined" onclick="moveVertical('redrawAccessory', 1);">Down</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawAccessory', -1);">Left</button>
+                    <button class="button is-small is-outlined" onclick="moveHorizontal('redrawAccessory', 1);">Right</button>
+                </div>
             </div>
         </div>
 
-        <div id='bodyContainer'>
-            <div>Body Colours:</div>
-            <button style='display:none;'>Reset</button>
-            
-            <br>
-            
-            <div id='bodyColours' style='width:192px;'>
-            </div>
-
-            <div class="styleToggle">
-                <div>Body Style:</div>
-                <button id='bodyPrev' onclick='swapBody(-1);'><<</button>
-                <button id ='bodyNext' onclick='swapBody(1);'>>></button>
-                <button onclick="moveVertical('redrawBody', -1);">Move Up</button>
-                <button onclick="moveVertical('redrawBody', 1);">Move Down</button>
-                <button onclick="moveHorizontal('redrawBody', -1);">Move Left</button>
-                <button onclick="moveHorizontal('redrawBody', 1);">Move Right</button>
-            </div>
-        </div>
-
-        <div id='accessoryContainer'>
-            <div>Accessory Colours:</div>
-            <button style='display:none;'>Reset</button>
-            <br>
-            <div id='accessoryColours' style='width:192px;'>
-            </div>
-
-            <div class="styleToggle">
-                <div>Accessory Style:</div>
-                <button id='accPrev' onclick='swapAcc(-1);'><<</button>
-                <button id ='accNext' onclick='swapAcc(1);'>>></button>
-                <button onclick="moveVertical('redrawAccessory', -1);">Move Up</button>
-                <button onclick="moveVertical('redrawAccessory', 1);">Move Down</button>
-                <button onclick="moveHorizontal('redrawAccessory', -1);">Move Left</button>
-                <button onclick="moveHorizontal('redrawAccessory', 1);">Move Right</button>
-            </div>
-        </div>
-    </div>
-
-</body>
+    </body>
+</html>
