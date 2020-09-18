@@ -188,27 +188,18 @@
 
         <style>
 
-        div {
-          display:inline-block;
-        }
-
         #displayContainer {
-          width: 100%;
-          height: 185px;
-          display: flex;
           margin-top: 50px;
         }
 
-        #redrawContainer {
+        .redrawContainer {
           width: 72px;
           height: 96px;
           margin: 0 auto;
+
         }
 
-        #redrawContainer2x {
-          width: 72px;
-          height: 96px;
-          margin: 0 auto;
+        .redrawContainer2x {
           transform: scale(2, 2);
           image-rendering: pixelated;
         }
@@ -225,37 +216,43 @@
         </style>
     </head>
     <body>
-        <div id='displayContainer'>
-            <div id='redrawContainer'>
-                <img src='assets/frame_1.png' class='redraw'>
-                <canvas class="redraw redrawHairBack redrawPosition"></canvas>
-                <canvas class="redraw redrawBody redrawPosition"></canvas>
-                <canvas class="redraw redrawAccessory redrawPosition"></canvas>
-                <canvas class="redraw redrawHair redrawPosition"></canvas>
-                <canvas class="redraw redrawEyes redrawPosition"></canvas>
-                <canvas class="redraw redrawMouth redrawPosition"></canvas>
-                
-                <img src='assets/frame_0.png' class='redraw'>
-            </div>
-            
-            <div id='redrawContainer2x'>
-                <img src='assets/frame_1.png' class='redraw'>
-                <canvas class="redraw redrawHairBack redrawPosition"></canvas>
-                <canvas class="redraw redrawBody redrawPosition"></canvas>
-                <canvas class="redraw redrawAccessory redrawPosition"></canvas>
-                <canvas class="redraw redrawHair redrawPosition"></canvas>
-                <canvas class="redraw redrawEyes redrawPosition"></canvas>
-                <canvas class="redraw redrawMouth redrawPosition"></canvas>
-                <img src='assets/frame_0.png' class='redraw'>
-            </div>
-        </div>
-
         <img src='assets/hair_front_sol_01.png' id='hair' style='display:none;'>
         <img src='assets/body_sol_01.png' id='body' style='display:none;'>
         <img src='assets/accessory_sol_01.png' id='accessory' style='display:none;'>
         <img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
         <img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
         <img src='assets/hair_back_sol_01.png' id='hairBack' style='display:none;'>
+    
+        <section class="section">
+        <div class="columns" id="displayContainer">
+            <div class="column">
+                <div class='redrawContainer'>
+                    <img src='assets/frame_1.png' class='redraw'>
+                    <canvas class="redraw redrawHairBack redrawPosition"></canvas>
+                    <canvas class="redraw redrawBody redrawPosition"></canvas>
+                    <canvas class="redraw redrawAccessory redrawPosition"></canvas>
+                    <canvas class="redraw redrawHair redrawPosition"></canvas>
+                    <canvas class="redraw redrawEyes redrawPosition"></canvas>
+                    <canvas class="redraw redrawMouth redrawPosition"></canvas>
+
+                    <img src='assets/frame_0.png' class='redraw'>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class='redrawContainer redrawContainer2x'>
+                    <img src='assets/frame_1.png' class='redraw'>
+                    <canvas class="redraw redrawHairBack redrawPosition"></canvas>
+                    <canvas class="redraw redrawBody redrawPosition"></canvas>
+                    <canvas class="redraw redrawAccessory redrawPosition"></canvas>
+                    <canvas class="redraw redrawHair redrawPosition"></canvas>
+                    <canvas class="redraw redrawEyes redrawPosition"></canvas>
+                    <canvas class="redraw redrawMouth redrawPosition"></canvas>
+                    <img src='assets/frame_0.png' class='redraw'>
+                </div>
+            </div>
+        </div>
+        </section>
 
         <div class="columns">
             <div class="column">
@@ -277,11 +274,11 @@
             </div>
         </div>
 
-        <div id='pieceModContainer'>
-            <div class='block' id='hairContainer'>
+        <div class="columns">
+            <div class="column block" id='hairContainer'>
                 <h5 class="title is-5">Hair Front</h5>
                 <button style='display:none;'>Reset</button>
-                Colours
+                <div>Colours</div>
                 <div id='hairColours' style='width:192px;'>
                 </div>
 
@@ -298,10 +295,10 @@
                 </div>
             </div>
 
-            <div class='block' id='hairContainer'>
+            <div class="column block" id='hairContainer'>
                 <h5 class="title is-5">Hair Back</h5>
                 <button style='display:none;'>Reset</button>
-                Colours
+                <div>Colours</div>
                 <div id='hairBackColours' style='width:192px;'>
                 </div>
 
@@ -318,10 +315,10 @@
                 </div>
             </div>
 
-            <div class='block' id='eyesContainer'>
+            <div class="column block" id='eyesContainer'>
                 <h5 class="title is-5">Eyes</h5>
                 <button style='display:none;'>Reset</button>
-                Colours
+                <div>Colours</div>
                 <div id='eyesColours' style='width:192px;'>
                 </div>
 
@@ -338,10 +335,10 @@
                 </div>
             </div>
 
-            <div class='block' id='mouthContainer'>
+            <div class="column block" id='mouthContainer'>
                 <h5 class="title is-5">Mouth</h5>
                 <button style='display:none;'>Reset</button>
-                Colours
+                <div>Colours</div>
                 <div id='mouthColours' style='width:192px;'>
                 </div>
 
@@ -358,10 +355,10 @@
                 </div>
             </div>
 
-            <div class='block' id='bodyContainer'>
+            <div class="column block" id='bodyContainer'>
                 <h5 class="title is-5">Body</h5>
                 <button style='display:none;'>Reset</button>
-                Colours
+                <div>Colours</div>
                 <div id='bodyColours' style='width:192px;'>
                 </div>
 
@@ -378,10 +375,10 @@
                 </div>
             </div>
 
-            <div class='block' id='accessoryContainer'>
+            <div class="column block" id='accessoryContainer'>
                 <h5 class="title is-5">Accessory</h5>
                 <button style='display:none;'>Reset</button>
-                Colours
+                <div>Colours</div>
                 <div id='accessoryColours' style='width:192px;'>
                 </div>
 
