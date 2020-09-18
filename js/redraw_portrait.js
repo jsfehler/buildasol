@@ -5,24 +5,25 @@ function redrawPortrait(elementId, outputContainer) {
     redrawContext2x = redrawCanvases[1].getContext('2d')
 
     var img = document.getElementById(elementId);
-    var canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+    var tempCanvas = document.createElement('canvas');
+    tempCanvas.width = img.width;
+    tempCanvas.height = img.height;
+
+    var tempCanvasContext = tempCanvas.getContext('2d');
+    tempCanvasContext.drawImage(img, 0, 0, img.width, img.height);
 
     for (var y = 0; y <= 80; y++) {
         for (var x = 0; x <= 64; x++) {
-            data = canvas.getContext('2d').getImageData(x, y, 1, 1);
+            data = tempCanvasContext.getImageData(x, y, 1, 1);
             rgba = data.data;
 
             // For every pixel, check if colour has been replaced
-
             ff = false;
             for (var z = 0; z < img.canvii.length; z++) {
-                if (rgba[0] === img.canvii[z].originalColour[0] && rgba[1] === img.canvii[z].originalColour[1] && rgba[2] === img.canvii[z].originalColour[2]) {
-                    ff = hexToRgb(img.canvii[z].value)
+                var canvas = img.canvii[z];
+                if (rgba[0] === canvas.originalColour[0] && rgba[1] === canvas.originalColour[1] && rgba[2] === canvas.originalColour[2]) {
+                    ff = hexToRgb(canvas.value)
                     ff.a = rgba[3];
-                    var zz = img.canvii[z].value
                 }
             }
 
