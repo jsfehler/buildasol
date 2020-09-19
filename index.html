@@ -194,9 +194,8 @@
 
         .redrawContainer {
           width: 72px;
-          height: 96px;
+          height: 192px;
           margin: 0 auto;
-
         }
 
         .redrawContainer2x {
@@ -222,10 +221,10 @@
         <img src='assets/eyes_sol_01.png' id='eyes' style='display:none;'>
         <img src='assets/mouth_sol_01.png' id='mouth' style='display:none;'>
         <img src='assets/hair_back_sol_01.png' id='hairBack' style='display:none;'>
-    
+
         <section class="section">
-        <div class="columns" id="displayContainer">
-            <div class="column">
+        <div class="columns is-centered" id="displayContainer">
+            <div class="column is-half">
                 <div class='redrawContainer'>
                     <img src='assets/frame_1.png' class='redraw'>
                     <canvas class="redraw redrawHairBack redrawPosition"></canvas>
@@ -234,12 +233,11 @@
                     <canvas class="redraw redrawHair redrawPosition"></canvas>
                     <canvas class="redraw redrawEyes redrawPosition"></canvas>
                     <canvas class="redraw redrawMouth redrawPosition"></canvas>
-
                     <img src='assets/frame_0.png' class='redraw'>
                 </div>
             </div>
 
-            <div class="column">
+            <div class="column is-half">
                 <div class='redrawContainer redrawContainer2x'>
                     <img src='assets/frame_1.png' class='redraw'>
                     <canvas class="redraw redrawHairBack redrawPosition"></canvas>
@@ -283,7 +281,7 @@
                 </div>
 
                 <div>
-                    <div>Style</div>
+                    <div>Piece</div>
                     <button class="button is-small is-outlined" id='hairPrev' onclick='swapHair(-1);'><<</button>
                     <button class="button is-small is-outlined" id ='hairNext' onclick='swapHair(1);'>>></button>
 
@@ -303,7 +301,7 @@
                 </div>
 
                 <div>
-                    <div>Style</div>
+                    <div>Piece</div>
                     <button class="button is-small is-outlined" id='hairBackPrev' onclick='swapHairBack(-1);'><<</button>
                     <button class="button is-small is-outlined" id ='hairBackNext' onclick='swapHairBack(1);'>>></button>
                     
@@ -323,7 +321,7 @@
                 </div>
 
                 <div>
-                    <div>Style</div>
+                    <div>Piece</div>
                     <button class="button is-small is-outlined" id='eyesPrev' onclick='swapEyes(-1);'><<</button>
                     <button class="button is-small is-outlined" id ='eyesNext' onclick='swapEyes(1);'>>></button>
                     
@@ -343,7 +341,7 @@
                 </div>
 
                 <div>
-                    <div>Style</div>
+                    <div>Piece</div>
                     <button class="button is-small is-outlined" id='mouthPrev' onclick='swapMouth(-1);'><<</button>
                     <button class="button is-small is-outlined" id ='mouthNext' onclick='swapMouth(1);'>>></button>
                     
@@ -363,7 +361,7 @@
                 </div>
 
                 <div>
-                    <div>Style</div>
+                    <div>Piece</div>
                     <button class="button is-small is-outlined" id='bodyPrev' onclick='swapBody(-1);'><<</button>
                     <button class="button is-small is-outlined" id ='bodyNext' onclick='swapBody(1);'>>></button>
                     
@@ -383,7 +381,7 @@
                 </div>
 
                 <div>
-                    <div>Style</div>
+                    <div>Piece</div>
                     <button class="button is-small is-outlined" id='accPrev' onclick='swapAcc(-1);'><<</button>
                     <button class="button is-small is-outlined" id ='accNext' onclick='swapAcc(1);'>>></button>
                     
